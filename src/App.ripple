@@ -1,0 +1,41 @@
+import { track } from 'ripple';
+import Header from './assets/components/Header.ripple'
+import Content from './assets/components/Content.ripple'
+
+export component App() {
+	<div>
+    <main>
+      <Header/>
+      <h1>{'Hows the Sky looking today?'}</h1>
+      {/* Search */}
+      <Content/>
+    </main>
+  </div>
+
+
+
+  <style>
+    div {
+      min-height: 100vh;
+      min-width: 100vw;
+      background-color: #02012C;
+    }
+
+    main {
+      max-width: 1216px;
+      padding: 48px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 64px;
+    }
+
+    h1 {
+      color: white;
+      font-size: 52px;
+      line-height: 120%;
+    }
+  </style>
+}
+

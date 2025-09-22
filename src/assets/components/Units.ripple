@@ -1,0 +1,27 @@
+import UnitIcon from "../images/icon-units.svg"
+import Dropdown from "../images/icon-dropdown.svg"
+
+export default component Units() {
+    <div>
+        <img src={UnitIcon} alt="units-icon" width={16} height={16} />
+        <span>{'Units'}</span>
+        <img src={Dropdown} alt="dropdown-icon" width={16} height={16} />
+    </div>
+
+    <style>
+        div {
+            width: 120px;
+            height: 44px;
+            background-color: #262540;
+            border-radius: 8px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        span {
+            color: white;
+        }
+    </style>
+} 

@@ -1,0 +1,74 @@
+import DropdownIcon from "../images/icon-dropdown.svg"
+import FogIcon from "../images/icon-fog.webp"
+
+export default component HourlyForecast() {
+    <section>
+        <header>
+            <h1>{'Hourly forecast'}</h1>
+            <button>
+                <span>{'Tuesday'}</span>
+                <img src={DropdownIcon} alt="dropdown-icon" width={12} height={18} />
+            </button>
+        </header>
+
+        const hours = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
+        for (const hour of hours) {
+            <div>
+                <img src={FogIcon} alt="icon" width={40} height={40} />
+                <h2>{hour}</h2>
+                <span>{'20°'}</span>
+            </div>
+        }
+    </section>
+
+    <style>
+        section {
+            width: 100%;
+            height: 698px;
+            border-radius: 20px;
+            background-color: #262540;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow: scroll;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        header button {
+            background-color: #3C3B5E;
+            padding: 8px 16px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        h1 {
+            color: white;
+
+        }
+
+        div {
+            width: 100%;
+            height: 60px;
+            border-radius: 8px;
+            border: 1px solid #3C3B5E;
+            background-color: #302F4A;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            color: white;
+        }
+
+        h2 {
+            flex-grow: 1;
+        }
+    </style>
+}

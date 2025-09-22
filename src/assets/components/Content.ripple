@@ -1,0 +1,29 @@
+import WeatherInfo from "./WeatherInfo.ripple"
+import DailyForecast from "./DailyForecast.ripple"
+import HourlyForecast from "./HourlyForecast.ripple"
+
+export default component Content () {
+
+    <section>
+        <div>
+            <WeatherInfo/>
+            <DailyForecast/>
+        </div>
+        <HourlyForecast/>
+    </section>
+
+    <style>
+        section {
+            width: 100%;
+            display: flex;
+            gap: 32px;
+        }
+
+        div {
+            min-width: 800px;
+            display: flex;
+            flex-direction: column;
+            gap: 48px;
+        }
+    </style>
+}

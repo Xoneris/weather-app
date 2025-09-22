@@ -1,0 +1,17 @@
+import Logo from "../images/logo.svg"
+import Units from "./Units.ripple"
+
+export default component Header() {
+    <header>
+        <img src={Logo} alt="logo" />
+        <Units/>
+    </header>
+
+    <style>
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+}
