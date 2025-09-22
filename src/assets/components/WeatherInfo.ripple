@@ -1,40 +1,76 @@
 import SunnyIcon from "../images/icon-sunny.webp"
 
-export default component WeatherInfo() {
-    <header>
+export default component WeatherInfo({
+    temperature,
+    feelsLike,
+    humidity,
+    wind,
+    precipitation,
+}:{
+    temperature: number,
+    feelsLike: number,
+    humidity: number;
+    wind: number,
+    precipitation: number,
+}) {
 
-        <section>
-            <h2>{'Berlin, Germany'}</h2>
-            <span>{'Tuesday, Aug 5, 2025'}</span>
-        </section>
+    if (temperature) {
+        <header class="loaded">
 
-        <div>
-            <img src={SunnyIcon} alt="icon" width={120} height={120} />
-            <h1>{'20°'}</h1>
-        </div>
+            <section>
+                <h2>{'Berlin, Germany'}</h2>
+                <span>{'Tuesday, Aug 5, 2025'}</span>
+            </section>
 
-    </header>
+            <div>
+                <img src={SunnyIcon} alt="icon" width={120} height={120} />
+                <h1>{temperature}{'°'}</h1>
+            </div>
+
+        </header>
+    } else {
+        <header class="loading">
+            <p>{'Loading...'}</p>
+        </header>
+    }
+    
 
     <div>
 
         <article>
             <p>{'Feels Like'}</p>
-            <h3>{'18°'}</h3>
+            if (feelsLike) {
+                <h3>{feelsLike}{'°'}</h3>
+            } else {
+                <h3>{'-'}</h3>
+            }
         </article>
 
         <article>
             <p>{'Humidity'}</p>
-            <h3>{'18°'}</h3>
+            if (humidity) {
+                <h3>{humidity}{'%'}</h3>
+            } else {
+                <h3>{'-'}</h3>
+            }
         </article>
 
         <article>
             <p>{'Wind'}</p>
-            <h3>{'18°'}</h3>
+            if (wind) {
+                <h3>{wind}{' km/h'}</h3>
+            } else {
+                <h3>{'-'}</h3>
+            }
         </article>
 
         <article>
             <p>{'Precipitation'}</p>
-            <h3>{'18°'}</h3>
+            if (precipitation) {
+                <h3>{precipitation}{' mm'}</h3>
+            } else {
+                <h3>{'-'}</h3>
+            }
         </article>
 
     </div>
@@ -45,11 +81,20 @@ export default component WeatherInfo() {
         width: 100%;
         height: 286px;
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        background-image: url("../images/bg-today-large.svg");
+        border-radius: 20px;
         padding: 24px;
         color: white;
+    }
+
+    .loaded {
+        background-image: url("../images/bg-today-large.svg");
+        justify-content: space-between;
+    }
+
+    .loading {
+        background-color: #262540;
+        justify-content: center;
     }
 
     header h1 {
@@ -92,6 +137,11 @@ export default component WeatherInfo() {
         justify-content: space-between;
         color: white;
         border: 1px solid #3C3B5E;
+    }
+
+    article h3 {
+        font-size: 32px;
+
     }
 
 </style>
