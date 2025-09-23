@@ -1,5 +1,7 @@
 import SunnyIcon from "../images/icon-sunny.webp"
 
+import { SelectedUnitsContext } from "../../App.ripple"
+
 export default component WeatherInfo({
     temperature,
     feelsLike,
@@ -13,6 +15,8 @@ export default component WeatherInfo({
     wind: number,
     precipitation: number,
 }) {
+
+    const selectedUnits = SelectedUnitsContext.get()
 
     if (temperature) {
         <header class="loaded">
@@ -58,7 +62,13 @@ export default component WeatherInfo({
         <article>
             <p>{'Wind'}</p>
             if (wind) {
-                <h3>{wind}{' km/h'}</h3>
+                <h3>{wind}
+                if (selectedUnits.@windSpeed === "kmh") {
+                    {' km/h'}
+                } else {
+                    {' mph'}
+                }
+                </h3>
             } else {
                 <h3>{'-'}</h3>
             }
@@ -67,7 +77,13 @@ export default component WeatherInfo({
         <article>
             <p>{'Precipitation'}</p>
             if (precipitation) {
-                <h3>{precipitation}{' mm'}</h3>
+                <h3>{precipitation}
+                if (selectedUnits.@precipitation === "mm") {
+                    {' mm'}
+                } else {
+                    {' in'}
+                }
+                </h3>
             } else {
                 <h3>{'-'}</h3>
             }

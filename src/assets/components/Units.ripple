@@ -1,11 +1,15 @@
 import UnitIcon from "../images/icon-units.svg"
 import Dropdown from "../images/icon-dropdown.svg"
+import CheckmarkIcon from "../images/icon-checkmark.svg"
 
-import { track } from 'ripple';
+import { track, createContext } from 'ripple';
+
+import { SelectedUnitsContext } from "../../App.ripple"
 
 export default component Units() {
 
     let isUnitsMenuOpen = track(false)
+    const selectedUnits = SelectedUnitsContext.get()
 
     <div>
         <button onClick={() => @isUnitsMenuOpen = !@isUnitsMenuOpen}>
@@ -18,7 +22,72 @@ export default component Units() {
         if (@isUnitsMenuOpen) {
 
             <dialog>
-
+                <button>{'Switch to Imperial'}</button>
+                <div>
+                    <h3>{'Temperature'}</h3>
+                    <button 
+                        class={selectedUnits.@temperature === "C" ? "active" : null}  
+                        onClick={() => selectedUnits.@temperature = "C"}    
+                    >
+                        {'Celcius (°C)'}
+                        if (selectedUnits.@temperature === "C") {
+                            <img src={CheckmarkIcon} alt="checkmark-icon"/>
+                        }
+                    </button>
+                    <button 
+                        class={selectedUnits.@temperature === "F" ? "active" : null}  
+                        onClick={() => selectedUnits.@temperature = "F"}      
+                    >
+                        {'Fahrenheit (°F)'}
+                        if (selectedUnits.@temperature === "F") {
+                            <img src={CheckmarkIcon} alt="checkmark-icon"/>
+                        }
+                    </button>
+                </div>
+                <hr/>
+                <div>
+                    <h3>{'Wind speed'}</h3>
+                    <button
+                        class={selectedUnits.@windSpeed === "kmh" ? "active" : null}
+                        onClick={() => selectedUnits.@windSpeed = "kmh"}
+                    >
+                        {'km/h'}
+                        if (selectedUnits.@windSpeed === "kmh") {
+                            <img src={CheckmarkIcon} alt="checkmark-icon"/>
+                        }
+                    </button>
+                    <button
+                        class={selectedUnits.@windSpeed === "mph" ? "active" : null}
+                        onClick={() => selectedUnits.@windSpeed = "mph"}
+                    >
+                        {'mph'}
+                        if (selectedUnits.@windSpeed === "mph") {
+                            <img src={CheckmarkIcon} alt="checkmark-icon"/>
+                        }
+                    </button>
+                </div>
+                <hr/>
+                <div>
+                    <h3>{'Precipitation'}</h3>
+                    <button
+                        class={selectedUnits.@precipitation === "mm" ? "active" : null}
+                        onClick={() => selectedUnits.@precipitation = "mm"}
+                    >
+                        {'Millimeters (mm)'}
+                        if (selectedUnits.@precipitation === "mm") {
+                            <img src={CheckmarkIcon} alt="checkmark-icon"/>
+                        }
+                    </button>
+                    <button
+                        class={selectedUnits.@precipitation === "in" ? "active" : null}
+                        onClick={() => selectedUnits.@precipitation = "in"}
+                    >
+                        {'Inches (in)'}
+                        if (selectedUnits.@precipitation === "in") {
+                            <img src={CheckmarkIcon} alt="checkmark-icon"/>
+                        }
+                    </button>
+                </div>
             </dialog>
         }
     </div>
@@ -50,11 +119,54 @@ export default component Units() {
             top: 54px;
             left: -94px;
             border-radius: 12px;
-            padding: 16px;
+            padding: 6px 8px;
             display: flex;
             flex-direction: column;
+            gap: 4px;
+            color: white;
             background-color: #262540;
             border: 1px solid #3C3B5E;
+        }
+        
+        dialog div {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        h3 {
+            color: #ACACB7;
+            font-size: 14px;
+            line-height: 120%;
+            padding-top: 6px;
+            padding-left: 8px;
+        }
+
+        hr {
+            border: 1px solid #3C3B5E;
+        }
+
+        dialog button {
+            width: 100%;
+            height: 39px;
+            padding: 10px 8px;
+            display: flex;
+            justify-content: flex-start;
+            font-size: 16px;
+            line-height: 120%;
+            
+        }
+
+        dialog div button {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .active {
+            border-radius: 8px;
+            background-color: #302F4A;
         }
     </style>
 } 

@@ -1,12 +1,23 @@
-import { track } from 'ripple';
+import { track, createContext } from 'ripple';
 import Header from './assets/components/Header.ripple'
 import Content from './assets/components/Content.ripple'
 
+export const SelectedUnitsContext  = createContext({});
+
 export component App() {
+	
+  const obj = {}
+  obj.temperature = track("C")
+  obj.windSpeed = track("kmh")
+  obj.precipitation = track("mm")
+
+  SelectedUnitsContext.set(obj)
+
 	<div>
     <main>
       <Header/>
       <h1>{'Hows the Sky looking today?'}</h1>
+
       {/* Search */}
       <Content/>
     </main>

@@ -3,30 +3,42 @@ import DailyForecast from "./DailyForecast.ripple"
 import HourlyForecast from "./HourlyForecast.ripple"
 import { track, effect } from 'ripple';
 
+import { SelectedUnitsContext } from "../../App.ripple"
+
 export default component Content () {
 
     let data = track({})
+    let selectedUnits = SelectedUnitsContext.get()
 
     effect(() => {
 
         async function getWeatherData () {
-            const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=precipitation_sum,wind_speed_10m_max&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,precipitation");
+
+            const BASE_API = "https://api.open-meteo.com/v1/forecast?"
+            const API_DATA = "latitude=52.52&longitude=13.41&daily=precipitation_sum,wind_speed_10m_max&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,precipitation&current=apparent_temperature,temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m"
+            const temperatureParam = selectedUnits.@temperature === "F" ? "&temperature_unit=fahrenheit" : ""
+            const windSpeedParam = selectedUnits.@windSpeed === "mph" ? "&wind_speed_unit=mph" : ""
+            const precipitationParam = selectedUnits.@precipitation === "in" ? "&precipitation_unit=inch" : ""
+
+            const res = await fetch(BASE_API + API_DATA + temperatureParam + windSpeedParam + precipitationParam);
+
             @data = await res.json()
             console.log(@data)
         }
         getWeatherData()
     })
 
+
     <section>
         <div>
             <WeatherInfo
-                temperature={@data?.hourly.temperature_2m[0]}
-                feelsLike={@data?.hourly.apparent_temperature[0]}
-                humidity={@data?.hourly.relative_humidity_2m[0]}
-                wind={@data?.hourly.wind_speed_10m[0]}
-                precipitation={@data?.hourly.precipitation[0]}
+                temperature={@data?.current.temperature_2m}
+                feelsLike={@data?.current.apparent_temperature}
+                humidity={@data?.current.relative_humidity_2m}
+                wind={@data?.current.wind_speed_10m}
+                precipitation={@data?.current.precipitation}
             />
-            
+
             <DailyForecast
                 
             />
