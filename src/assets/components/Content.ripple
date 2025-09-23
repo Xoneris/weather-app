@@ -8,6 +8,7 @@ import { SelectedUnitsContext } from "../../App.ripple"
 export default component Content () {
 
     let data = track({})
+    let dailyTempsArray = []
     let selectedUnits = SelectedUnitsContext.get()
 
     effect(() => {
@@ -24,6 +25,20 @@ export default component Content () {
 
             @data = await res.json()
             console.log(@data)
+
+           
+
+            // for (let i = 0 ; i < 168 ; i += 24) {
+
+            //     const obj = track({})
+            //     @obj.dailyTemps = @data?.hourly.temperature_2m.slice(i, i + 24)
+            //     @obj.dailyHigh = Math.max(...obj.dailyTemps)
+            //     @obj.dailyLow = Math.min(...obj.dailyTemps)
+            //     dailyTempsArray.push(@obj)
+            // }
+
+            // console.log(dailyTempsArray)
+
         }
         getWeatherData()
     })
@@ -37,14 +52,16 @@ export default component Content () {
                 humidity={@data?.current.relative_humidity_2m}
                 wind={@data?.current.wind_speed_10m}
                 precipitation={@data?.current.precipitation}
-            />
+            />  
 
             <DailyForecast
-                
+                hourlyTemps={@data?.hourly.temperature_2m}
+                //hourlyTemps={@dailyTempsArray}
             />
         </div>
         <HourlyForecast
             hourlyTemps={@data?.hourly.temperature_2m}
+            //hourlyTemps={dailyTempsArray}
         />
     </section>
 

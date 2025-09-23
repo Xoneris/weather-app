@@ -1,22 +1,59 @@
 import StormIcon from "../images/icon-storm.webp"
 
-export default component DailyForecast() {
+import { track, effect } from 'ripple';
+
+export default component DailyForecast({hourlyTemps}:{hourlyTemps:number[]}) {
     
+    
+    let selectedDayTemps = track([])
+
+    effect(() => {
+        if (hourlyTemps) {
+            // @selectedDayTemps = hourlyTemps.slice(0,23)
+            const tempArray = []
+            for (let i = 0 ; i < 168 ; i += 24) {
+
+                const obj = {}
+                obj.dailyTemps = hourlyTemps.slice(i, i + 24)
+                obj.dailyHigh = Math.max(...obj.dailyTemps)
+                obj.dailyLow = Math.min(...obj.dailyTemps)
+                tempArray.push(obj)
+            }
+            @selectedDayTemps = tempArray
+
+            console.log(@selectedDayTemps)
+        }
+    })
+
+
     <h1>{'Daily forecast'}</h1>
     
     <section>
 
-        const days = [1,2,3,4,5,6,7]
-        for (const day of days) {
-            <article>
-                <h3>{'Tue'}</h3>
-                <img src={StormIcon} alt="icon" width={60} height={60} />
-                <div>
-                    <p>{'20°'}</p>
-                    <p>{'14°'}</p>
-                </div>
-            </article>
+        if (@selectedDayTemps.length > 0) {
+            // for (const day of @selectedDayTemps) {
+
+                <article>
+                    <h3>{'sadfsafdfdsa'}</h3>
+                    <img src={StormIcon} alt="icon" width={60} height={60} />
+                    <div>
+                        <p>{@selectedDayTemps[0].dailyHigh}</p>
+                        <p>{@selectedDayTemps[0].dailyLow}</p>
+                        </div>
+                </article>
+            // }
+
+         } else {
+            <article></article>
+            <article></article>
+            <article></article>
+            <article></article>
+            <article></article>
+            <article></article>
+            <article></article>
         }
+        
+
         
     </section>
 

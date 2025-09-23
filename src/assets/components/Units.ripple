@@ -2,14 +2,42 @@ import UnitIcon from "../images/icon-units.svg"
 import Dropdown from "../images/icon-dropdown.svg"
 import CheckmarkIcon from "../images/icon-checkmark.svg"
 
-import { track, createContext } from 'ripple';
+import { track, effect } from 'ripple';
 
 import { SelectedUnitsContext } from "../../App.ripple"
 
 export default component Units() {
 
     let isUnitsMenuOpen = track(false)
+    let selectedMetricOrImperial = track("metric")
+
     const selectedUnits = SelectedUnitsContext.get()
+
+    effect (() => {
+
+        if (selectedUnits.@temperature === "C" && selectedUnits.@windSpeed === "kmh" && selectedUnits.@precipitation === "mm") {
+            @selectedMetricOrImperial === "metric"
+        }
+
+        if (selectedUnits.@temperature === "F" && selectedUnits.@windSpeed === "mph" && selectedUnits.@precipitation === "in") {
+            @selectedMetricOrImperial === "imperial"
+        }
+    })
+
+    function handleSwitchAllUnits (unit:string) {
+
+        if (unit === "Imperial") {
+            selectedUnits.@temperature = "F"
+            selectedUnits.@windSpeed = "mph"
+            selectedUnits.@precipitation = "in"
+            @selectedMetricOrImperial = "imperial"
+        } else if (unit === "Metric") {
+            selectedUnits.@temperature = "C"
+            selectedUnits.@windSpeed = "kmh"
+            selectedUnits.@precipitation = "mm"
+            @selectedMetricOrImperial = "metric"
+        }
+    }
 
     <div>
         <button onClick={() => @isUnitsMenuOpen = !@isUnitsMenuOpen}>
@@ -22,7 +50,19 @@ export default component Units() {
         if (@isUnitsMenuOpen) {
 
             <dialog>
-                <button>{'Switch to Imperial'}</button>
+
+                if (@selectedMetricOrImperial === "metric") {
+                    <button onClick={() => handleSwitchAllUnits("Imperial")}>
+                        {'Switch to Imperial'}
+                    </button>
+                }
+
+                if (@selectedMetricOrImperial === "imperial") {
+                    <button onClick={() => handleSwitchAllUnits("Metric")}>
+                        {'Switch to Metric'}
+                    </button>
+                }
+
                 <div>
                     <h3>{'Temperature'}</h3>
                     <button 
