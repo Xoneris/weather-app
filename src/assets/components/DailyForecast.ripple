@@ -1,6 +1,6 @@
 import StormIcon from "../images/icon-storm.webp"
 
-import { track, effect } from 'ripple';
+import { track, effect, TrackedArray } from 'ripple';
 
 export default component DailyForecast({hourlyTemps}:{hourlyTemps:number[]}) {
     
@@ -9,17 +9,19 @@ export default component DailyForecast({hourlyTemps}:{hourlyTemps:number[]}) {
 
     effect(() => {
         if (hourlyTemps) {
-            // @selectedDayTemps = hourlyTemps.slice(0,23)
             const tempArray = []
             for (let i = 0 ; i < 168 ; i += 24) {
 
                 const obj = {}
-                obj.dailyTemps = hourlyTemps.slice(i, i + 24)
-                obj.dailyHigh = Math.max(...obj.dailyTemps)
-                obj.dailyLow = Math.min(...obj.dailyTemps)
+                const allTempsPerDay = hourlyTemps.slice(i, i + 24)
+
+                obj.dailyTemps = allTempsPerDay
+                obj.dailyHigh = Math.max(...allTempsPerDay)
+                obj.dailyLow = Math.min(...allTempsPerDay)
+                obj.test = i
                 tempArray.push(obj)
             }
-            @selectedDayTemps = tempArray
+            @selectedDayTemps = [...tempArray]
 
             console.log(@selectedDayTemps)
         }
@@ -31,18 +33,17 @@ export default component DailyForecast({hourlyTemps}:{hourlyTemps:number[]}) {
     <section>
 
         if (@selectedDayTemps.length > 0) {
-            // for (const day of @selectedDayTemps) {
+            for (let day of @selectedDayTemps ; index i) {
 
                 <article>
-                    <h3>{'sadfsafdfdsa'}</h3>
+                    <h3>{i}</h3>
                     <img src={StormIcon} alt="icon" width={60} height={60} />
                     <div>
-                        <p>{@selectedDayTemps[0].dailyHigh}</p>
-                        <p>{@selectedDayTemps[0].dailyLow}</p>
+                        <p>{day.dailyHigh}{'°'}</p>
+                        <p>{day.dailyLow}{'°'}</p>
                         </div>
                 </article>
-            // }
-
+            }
          } else {
             <article></article>
             <article></article>
