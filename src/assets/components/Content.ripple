@@ -11,22 +11,35 @@ export default component Content () {
     let dailyTempsArray = []
     let selectedUnits = SelectedUnitsContext.get()
 
+    const rollingWeek = []
+    const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    
+
     effect(() => {
+
+        for (let i=0 ; i<7 ; i++) {
+            const day = new Date().getDay() 
+            const obj = {}
+            const index = (day + i) % 7
+            obj.weekday = weekdays[index]
+            obj.weekdayShort = weekdays[index].slice(0, 3)
+            rollingWeek.push(obj)
+        }
+
+        console.log(rollingWeek)
 
         async function getWeatherData () {
 
-            const BASE_API = "https://api.open-meteo.com/v1/forecast?"
+            const BASE_API_URL = "https://api.open-meteo.com/v1/forecast?"
             const API_DATA = "latitude=52.52&longitude=13.41&daily=precipitation_sum,wind_speed_10m_max&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,precipitation&current=apparent_temperature,temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m"
             const temperatureParam = selectedUnits.@temperature === "F" ? "&temperature_unit=fahrenheit" : ""
             const windSpeedParam = selectedUnits.@windSpeed === "mph" ? "&wind_speed_unit=mph" : ""
             const precipitationParam = selectedUnits.@precipitation === "in" ? "&precipitation_unit=inch" : ""
 
-            const res = await fetch(BASE_API + API_DATA + temperatureParam + windSpeedParam + precipitationParam);
+            const res = await fetch(BASE_API_URL + API_DATA + temperatureParam + windSpeedParam + precipitationParam);
 
             @data = await res.json()
             console.log(@data)
-
-           
 
             // for (let i = 0 ; i < 168 ; i += 24) {
 
@@ -56,11 +69,13 @@ export default component Content () {
 
             <DailyForecast
                 hourlyTemps={@data?.hourly.temperature_2m}
+                upcomingDays={rollingWeek}
                 //hourlyTemps={@dailyTempsArray}
             />
         </div>
         <HourlyForecast
             hourlyTemps={@data?.hourly.temperature_2m}
+            upcomingDays={rollingWeek}
             //hourlyTemps={dailyTempsArray}
         />
     </section>

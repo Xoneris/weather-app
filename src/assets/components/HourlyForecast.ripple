@@ -3,14 +3,27 @@ import FogIcon from "../images/icon-fog.webp"
 
 import { track, effect } from 'ripple';
 
-export default component HourlyForecast({hourlyTemps}:{hourlyTemps:number[]}) {
+export default component HourlyForecast({hourlyTemps,upcomingDays}:{hourlyTemps:number[],upcomingDays:any}) {
 
-    let selectedDay = track(1)
+    let selectedDay = track(0)
     let selectedDayTemps = track([])
+
+    const loadingArray = new Array(24);
 
     effect(() => {
         if (hourlyTemps) {
-            @selectedDayTemps = hourlyTemps.slice(0,23)
+            const tempArray = []
+            for (let i = 0 ; i < 168 ; i += 24) {
+
+                const obj = {}
+                const allTempsPerDay = hourlyTemps.slice(i, i + 24)
+
+                obj.dailyTemps = allTempsPerDay
+                tempArray.push(obj)
+            }
+            @selectedDayTemps = [...tempArray]
+
+            console.log(@selectedDayTemps)
         }
     })
 
@@ -20,7 +33,7 @@ export default component HourlyForecast({hourlyTemps}:{hourlyTemps:number[]}) {
             <h1>{'Hourly forecast'}</h1>
             <button>
                 if (hourlyTemps) {
-                    <span>{'Tuesday'}</span>
+                    <span>{upcomingDays[0]?.weekday}</span>
                 } else {
                     <span>{' - '}</span>
                 }
@@ -28,16 +41,18 @@ export default component HourlyForecast({hourlyTemps}:{hourlyTemps:number[]}) {
             </button>
         </header>
 
-        const hours = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
-        // for (const hour of hours) {
-        for (const temp of @selectedDayTemps) {
-            <div>
-                if (hourlyTemps) {
+        if (hourlyTemps) {
+            for (const temp of @selectedDayTemps[@selectedDay]?.dailyTemps; index i) {
+                <div>
                     <img src={FogIcon} alt="icon" width={40} height={40} />
-                    <h2>{'a'}</h2>
+                    <h2>{i}</h2>
                     <span>{temp}{'°'}</span>
-                }
-            </div>
+                </div>
+            }
+        } else {
+            for (const _ of loadingArray) {
+                <div></div>
+            }
         }
     </section>
 

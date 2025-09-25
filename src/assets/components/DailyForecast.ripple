@@ -2,7 +2,7 @@ import StormIcon from "../images/icon-storm.webp"
 
 import { track, effect, TrackedArray } from 'ripple';
 
-export default component DailyForecast({hourlyTemps}:{hourlyTemps:number[]}) {
+export default component DailyForecast({hourlyTemps,upcomingDays}:{hourlyTemps:number[],upcomingDays:any}) {
     
     
     let selectedDayTemps = track([])
@@ -36,7 +36,7 @@ export default component DailyForecast({hourlyTemps}:{hourlyTemps:number[]}) {
             for (let day of @selectedDayTemps ; index i) {
 
                 <article>
-                    <h3>{i}</h3>
+                    <h3>{upcomingDays[i]?.weekdayShort}</h3>
                     <img src={StormIcon} alt="icon" width={60} height={60} />
                     <div>
                         <p>{day.dailyHigh}{'°'}</p>
