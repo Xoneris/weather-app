@@ -18,7 +18,6 @@ export default component DailyForecast({hourlyTemps,upcomingDays}:{hourlyTemps:n
                 obj.dailyTemps = allTempsPerDay
                 obj.dailyHigh = Math.max(...allTempsPerDay)
                 obj.dailyLow = Math.min(...allTempsPerDay)
-                obj.test = i
                 tempArray.push(obj)
             }
             @selectedDayTemps = [...tempArray]
@@ -39,8 +38,8 @@ export default component DailyForecast({hourlyTemps,upcomingDays}:{hourlyTemps:n
                     <h3>{upcomingDays[i]?.weekdayShort}</h3>
                     <img src={StormIcon} alt="icon" width={60} height={60} />
                     <div>
-                        <p>{day.dailyHigh}{'°'}</p>
-                        <p>{day.dailyLow}{'°'}</p>
+                        <p>{Math.round(day.dailyHigh)}{'°'}</p>
+                        <p>{Math.round(day.dailyLow)}{'°'}</p>
                         </div>
                 </article>
             }
