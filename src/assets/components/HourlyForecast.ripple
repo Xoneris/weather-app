@@ -1,16 +1,18 @@
 import DropdownIcon from "../images/icon-dropdown.svg"
 import FogIcon from "../images/icon-fog.webp"
 
-import { track, effect } from 'ripple';
+import { track, effect } from 'ripple'; 
 
 export default component HourlyForecast({hourlyTemps,upcomingDays}:{hourlyTemps:number[],upcomingDays:any}) {
 
     let selectedDay = track(0)
     let selectedDayTemps = track([])
+    let isDayMenuOpen = track(false)
 
     const loadingArray = new Array(24);
 
     effect(() => {
+
         if (hourlyTemps) {
             const tempArray = []
             for (let i = 0 ; i < 168 ; i += 24) {
@@ -25,39 +27,84 @@ export default component HourlyForecast({hourlyTemps,upcomingDays}:{hourlyTemps:
 
             console.log(@selectedDayTemps)
         }
+
     })
 
+    // const scrollContent = document.getElementById('scroll-content')
 
-    <section>
+    // scrollContent.addEventListener("scroll", test)
+
+    // function test() {
+    //     console.log("test")
+    // }
+
+    
+
+    function convertIndexToHour (index:number) {
+
+        if (index === 0) {
+            return index+12 + " AM"
+        } else if (index < 12) {
+            return index + " AM"
+        } else if (index === 12) {
+            return index + " PM"
+        } else {
+            return index-12 + " PM"
+        }
+    }
+
+    <aside>
+
         <header>
             <h1>{'Hourly forecast'}</h1>
-            <button>
+            <button onClick={() => @isDayMenuOpen = !@isDayMenuOpen}>
                 if (hourlyTemps) {
-                    <span>{upcomingDays[0]?.weekday}</span>
+                    <span>{upcomingDays[@selectedDay].weekday}</span>
                 } else {
                     <span>{' - '}</span>
                 }
                 <img src={DropdownIcon} alt="dropdown-icon" width={12} height={18} />
             </button>
-        </header>
 
-        if (hourlyTemps) {
-            for (const temp of @selectedDayTemps[@selectedDay]?.dailyTemps; index i) {
-                <div>
-                    <img src={FogIcon} alt="icon" width={40} height={40} />
-                    <h2>{i}</h2>
-                    <span>{temp}{'°'}</span>
+            if (@isDayMenuOpen) {
+                <div>    
+                    for (const day of upcomingDays; index i) {
+                        <button
+                            class={@selectedDay === i ? "active" : null}
+                            onClick={() => {
+                                @selectedDay = i
+                                @isDayMenuOpen = false
+                            }}
+                        >
+                            {day.weekday}
+                        </button>
+                    }
                 </div>
             }
-        } else {
-            for (const _ of loadingArray) {
-                <div></div>
+        </header>
+
+        <section id="scroll-content">
+            if (hourlyTemps) {
+                for (const temp of @selectedDayTemps[@selectedDay]?.dailyTemps; index i) {
+                    <div>
+                        <img src={FogIcon} alt="icon" width={40} height={40} />
+                        <h2>{convertIndexToHour(i)}</h2>
+                        <span>{temp}{'°'}</span>
+                    </div>
+                }
+            } else {
+                for (const _ of loadingArray) {
+                    <div></div>
+                }
             }
-        }
-    </section>
+            
+        </section>
+        <nav></nav>
+    </aside>
 
     <style>
-        section {
+        aside {
+            position: relative;
             width: 100%;
             height: 698px;
             border-radius: 20px;
@@ -66,10 +113,11 @@ export default component HourlyForecast({hourlyTemps,upcomingDays}:{hourlyTemps:
             display: flex;
             flex-direction: column;
             gap: 16px;
-            overflow-y: scroll;
+            overflow: none;
         }
 
         header {
+            position: relative;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -82,6 +130,41 @@ export default component HourlyForecast({hourlyTemps,upcomingDays}:{hourlyTemps:
             border-radius: 8px;
             display: flex;
             justify-content: space-between;
+            gap: 12px;
+        }
+
+        header div {
+            position: absolute;
+            top: 48px;
+            right: 0px;
+            width: 214px;
+            padding: 8px;
+            background-color: #262540;
+            border: 1px solid #3C3B5E;
+            border-radius: 12px;    
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            z-index: 10;
+        }
+
+        header div button {
+            width: 100%;
+            background-color: #262540;
+        }
+
+        .active {
+            background-color: #302F4A;
+        }
+
+        section {
+            width: calc(100% + 20px);
+            padding-right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow-y: scroll;
+            box-sizing: content-box;
         }
 
         h1 {
@@ -100,6 +183,17 @@ export default component HourlyForecast({hourlyTemps,upcomingDays}:{hourlyTemps:
             align-items: center;
             padding: 10px 12px;
             color: white;
+        }
+
+        nav {
+            position: absolute;
+            top: 80px;
+            right: 2px;
+            width: 6px;
+            height: 100px; /* dynamically set via JS */
+            background-color: #302F4A;
+            border: 1px solid #3C3B5E;
+            border-radius: 4px;
         }
 
         h2 {
