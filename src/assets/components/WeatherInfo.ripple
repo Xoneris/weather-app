@@ -18,12 +18,20 @@ export default component WeatherInfo({
 
     const selectedUnits = SelectedUnitsContext.get()
 
+    const date = new Date()
+    const formatted = new Intl.DateTimeFormat("en-US", {
+        weekday: "long",
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+    }).format(date);
+
     if (temperature) {
         <header class="loaded">
 
             <section>
-                <h2>{'Berlin, Germany'}</h2>
-                <span>{'Tuesday, Aug 5, 2025'}</span>
+                <h2>{@selectedUnits.@locationName}</h2>
+                <span>{formatted}</span>
             </section>
 
             <div>
@@ -76,7 +84,7 @@ export default component WeatherInfo({
 
         <article>
             <p>{'Precipitation'}</p>
-            if (precipitation) {
+            if (precipitation !== undefined) {
                 <h3>{precipitation}
                 if (selectedUnits.@precipitation === "mm") {
                     {' mm'}

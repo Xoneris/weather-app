@@ -1,6 +1,7 @@
 import { track, createContext } from 'ripple';
 import Header from './assets/components/Header.ripple'
 import Content from './assets/components/Content.ripple'
+import Search from './assets/components/Search.ripple'
 
 export const SelectedUnitsContext  = createContext({});
 
@@ -10,6 +11,9 @@ export component App() {
   obj.temperature = track("C")
   obj.windSpeed = track("kmh")
   obj.precipitation = track("mm")
+  obj.locationName = track("Berlin, Germany")
+  obj.locationLatitude = track(52.52)
+  obj.locationLongitude = track(13.41)
 
   SelectedUnitsContext.set(obj)
 
@@ -18,7 +22,7 @@ export component App() {
       <Header/>
       <h1>{'Hows the Sky looking today?'}</h1>
 
-      {/* Search */}
+      <Search/>
       <Content/>
     </main>
   </div>
