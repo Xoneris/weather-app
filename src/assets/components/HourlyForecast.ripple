@@ -1,9 +1,15 @@
 import DropdownIcon from "../images/icon-dropdown.svg"
+import SunnyIcon from "../images/icon-sunny.webp"
+import PartlyCloudyIcon from "../images/icon-partly-cloudy.webp"
 import FogIcon from "../images/icon-fog.webp"
+import DrizzleIcon from "../images/icon-drizzle.webp"
+import RainIcon from "../images/icon-rain.webp"
+import SnowIcon from "../images/icon-snow.webp"
+import StormIcon from "../images/icon-storm.webp"
 
 import { track, effect } from 'ripple'; 
 
-export default component HourlyForecast({hourlyTemps,upcomingDays}:{hourlyTemps:number[],upcomingDays:any}) {
+export default component HourlyForecast({hourlyTemps,upcomingDays,weatherCodes}:{hourlyTemps:number[],upcomingDays:any,weatherCodes:number[]}) {
 
     let selectedDay = track(0)
     let selectedDayTemps = track([])
@@ -19,8 +25,10 @@ export default component HourlyForecast({hourlyTemps,upcomingDays}:{hourlyTemps:
 
                 const obj = {}
                 const allTempsPerDay = hourlyTemps.slice(i, i + 24)
+                const allWeatherCodesPerDay = weatherCodes.slice(i, i + 24)
 
                 obj.dailyTemps = allTempsPerDay
+                obj.dailyWeatherCodes = allWeatherCodesPerDay
                 tempArray.push(obj)
             }
             @selectedDayTemps = [...tempArray]
@@ -41,6 +49,20 @@ export default component HourlyForecast({hourlyTemps,upcomingDays}:{hourlyTemps:
         } else {
             return index-12 + " PM"
         }
+    }
+
+    function WeatherCodeToIcon (weatherCodeNumber:number) {
+
+        if (weatherCodeNumber === 0) return SunnyIcon;
+        else if (weatherCodeNumber > 0 && weatherCodeNumber < 4) return PartlyCloudyIcon;
+        else if (weatherCodeNumber > 44 && weatherCodeNumber < 49) return FogIcon;
+        else if (weatherCodeNumber > 50 && weatherCodeNumber < 58) return DrizzleIcon;
+        else if (weatherCodeNumber > 60 && weatherCodeNumber < 68) return RainIcon;
+        else if (weatherCodeNumber > 70 && weatherCodeNumber < 78) return SnowIcon;
+        else if (weatherCodeNumber > 79 && weatherCodeNumber < 83) return RainIcon;
+        else if (weatherCodeNumber > 84 && weatherCodeNumber < 87) return SnowIcon;
+        else if (weatherCodeNumber > 94 && weatherCodeNumber < 100) return StormIcon;
+        else return "";
     }
 
     <aside>
@@ -74,10 +96,10 @@ export default component HourlyForecast({hourlyTemps,upcomingDays}:{hourlyTemps:
         </header>
 
         <section id="scroll-content">
-            if (hourlyTemps) {
-                for (const temp of @selectedDayTemps[@selectedDay]?.dailyTemps; index i) {
+            if (@selectedDayTemps.length > 0) {
+                for (const temp of @selectedDayTemps[@selectedDay].dailyTemps ; index i) {
                     <div>
-                        <img src={FogIcon} alt="icon" width={40} height={40} />
+                        <img src={WeatherCodeToIcon(@selectedDayTemps[@selectedDay]?.dailyWeatherCodes[i])} alt="icon" width={40} height={40} />
                         <h2>{convertIndexToHour(i)}</h2>
                         <span>{temp}{'°'}</span>
                     </div>

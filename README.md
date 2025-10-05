@@ -54,8 +54,7 @@ Users should be able to:
 I used this challenge as an excute to try out the new JS framework ripple. So my entire learning is just how the framework works. Outside of that I didn't really learn anything new. I already know how todo state management and api calls and responsive design and all that.
 
 ### Missing Features
-
-- The weather Icons displayed is not a accurate representation of the current weather. I haven't created logic to determine which icon to display given appropriate weather data. 
+ 
 - The scrollbar on the hourly forecast looks very ugly and I'd like to eventually replace it with a custom scrolbar that looks nicer. 
 - Deafault weather data is currently Berlin, Germany. Would be nice if the default would be dynamic based on the user.
 

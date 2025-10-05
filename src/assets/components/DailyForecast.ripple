@@ -1,8 +1,16 @@
+import SunnyIcon from "../images/icon-sunny.webp"
+import PartlyCloudyIcon from "../images/icon-partly-cloudy.webp"
+import FogIcon from "../images/icon-fog.webp"
+import DrizzleIcon from "../images/icon-drizzle.webp"
+import RainIcon from "../images/icon-rain.webp"
+import SnowIcon from "../images/icon-snow.webp"
 import StormIcon from "../images/icon-storm.webp"
 
 import { track, effect } from 'ripple';
 
-export default component DailyForecast({hourlyTemps,upcomingDays}:{hourlyTemps:number[],upcomingDays:any}) {
+export default component DailyForecast({hourlyTemps,upcomingDays,weatherCodes}:{hourlyTemps:number[],upcomingDays:any,weatherCodes:number[]}) {
+    
+    
     
     
     let selectedDayTemps = track([])
@@ -25,20 +33,45 @@ export default component DailyForecast({hourlyTemps,upcomingDays}:{hourlyTemps:n
             @selectedDayTemps = [...tempArray]
 
             console.log(@selectedDayTemps)
+            console.log(weatherCodes)
         }
     })
 
+    function WeatherCodeToIcon (weatherCodeNumber:number) {
+
+        if (weatherCodeNumber === 0) return SunnyIcon;
+        else if (weatherCodeNumber > 0 && weatherCodeNumber < 4) return PartlyCloudyIcon;
+        else if (weatherCodeNumber > 44 && weatherCodeNumber < 49) return FogIcon;
+        else if (weatherCodeNumber > 50 && weatherCodeNumber < 58) return DrizzleIcon;
+        else if (weatherCodeNumber > 60 && weatherCodeNumber < 68) return RainIcon;
+        else if (weatherCodeNumber > 70 && weatherCodeNumber < 78) return SnowIcon;
+        else if (weatherCodeNumber > 79 && weatherCodeNumber < 83) return RainIcon;
+        else if (weatherCodeNumber > 84 && weatherCodeNumber < 87) return SnowIcon;
+        else if (weatherCodeNumber > 94 && weatherCodeNumber < 100) return StormIcon;
+        else return "";
+    }
 
     <h1>{'Daily forecast'}</h1>
     
     <section>
+
+    {/* 0	Clear sky
+    1–3	Mainly clear, partly cloudy, overcast
+    45–48	Fog or depositing rime fog
+    51–57	Drizzle
+    61–67	Rain
+    71–77	Snow
+    80–82	Rain showers
+    85–86	Snow showers
+    95–99	Thunderstorms */}
 
         if (@selectedDayTemps.length > 0) {
             for (let day of @selectedDayTemps ; index i) {
 
                 <article>
                     <h3>{upcomingDays[i]?.weekdayShort}</h3>
-                    <img src={StormIcon} alt="icon" width={60} height={60} />
+
+                    <img src={WeatherCodeToIcon(weatherCodes[i])} alt="icon" width={60} height={60} />
                     <div>
                         <p>{Math.round(day.dailyHigh)}{'°'}</p>
                         <p>{Math.round(day.dailyLow)}{'°'}</p>

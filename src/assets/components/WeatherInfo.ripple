@@ -1,4 +1,10 @@
 import SunnyIcon from "../images/icon-sunny.webp"
+import PartlyCloudyIcon from "../images/icon-partly-cloudy.webp"
+import FogIcon from "../images/icon-fog.webp"
+import DrizzleIcon from "../images/icon-drizzle.webp"
+import RainIcon from "../images/icon-rain.webp"
+import SnowIcon from "../images/icon-snow.webp"
+import StormIcon from "../images/icon-storm.webp"
 
 import { SelectedUnitsContext } from "../../App.ripple"
 
@@ -8,12 +14,14 @@ export default component WeatherInfo({
     humidity,
     wind,
     precipitation,
+    weatherCode,
 }:{
     temperature: number,
     feelsLike: number,
     humidity: number;
     wind: number,
     precipitation: number,
+    weatherCode: number,
 }) {
 
     const selectedUnits = SelectedUnitsContext.get()
@@ -26,6 +34,20 @@ export default component WeatherInfo({
         year: "numeric"
     }).format(date);
 
+    function WeatherCodeToIcon (weatherCodeNumber:number) {
+
+        if (weatherCodeNumber === 0) return SunnyIcon;
+        else if (weatherCodeNumber > 0 && weatherCodeNumber < 4) return PartlyCloudyIcon;
+        else if (weatherCodeNumber > 44 && weatherCodeNumber < 49) return FogIcon;
+        else if (weatherCodeNumber > 50 && weatherCodeNumber < 58) return DrizzleIcon;
+        else if (weatherCodeNumber > 60 && weatherCodeNumber < 68) return RainIcon;
+        else if (weatherCodeNumber > 70 && weatherCodeNumber < 78) return SnowIcon;
+        else if (weatherCodeNumber > 79 && weatherCodeNumber < 83) return RainIcon;
+        else if (weatherCodeNumber > 84 && weatherCodeNumber < 87) return SnowIcon;
+        else if (weatherCodeNumber > 94 && weatherCodeNumber < 100) return StormIcon;
+        else return "";
+    }
+
     if (temperature) {
         <header class="loaded">
 
@@ -35,7 +57,7 @@ export default component WeatherInfo({
             </section>
 
             <div>
-                <img src={SunnyIcon} alt="icon" width={120} height={120} />
+                <img src={WeatherCodeToIcon(weatherCode)} alt="icon" width={120} height={120} />
                 <h1>{temperature}{'°'}</h1>
             </div>
 

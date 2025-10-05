@@ -29,7 +29,7 @@ export default component Content () {
         async function getWeatherData () {
 
             const BASE_API_URL = "https://api.open-meteo.com/v1/forecast?"
-            const API_DATA = `latitude=${selectedUnits.@locationLatitude}&longitude=${selectedUnits.@locationLongitude}&daily=precipitation_sum,wind_speed_10m_max&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,precipitation&current=apparent_temperature,temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m`
+            const API_DATA = `latitude=${selectedUnits.@locationLatitude}&longitude=${selectedUnits.@locationLongitude}&daily=precipitation_sum,wind_speed_10m_max,weather_code&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,precipitation,weather_code&current=apparent_temperature,temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,weather_code`
             const temperatureParam = selectedUnits.@temperature === "F" ? "&temperature_unit=fahrenheit" : ""
             const windSpeedParam = selectedUnits.@windSpeed === "mph" ? "&wind_speed_unit=mph" : ""
             const precipitationParam = selectedUnits.@precipitation === "in" ? "&precipitation_unit=inch" : ""
@@ -52,15 +52,18 @@ export default component Content () {
                 humidity={@data?.current.relative_humidity_2m}
                 wind={@data?.current.wind_speed_10m}
                 precipitation={@data?.current.precipitation}
+                weatherCode={@data?.current.weather_code}
             />  
 
             <DailyForecast
                 hourlyTemps={@data?.hourly.temperature_2m}
+                weatherCodes={@data?.daily.weather_code}
                 upcomingDays={rollingWeek}
             />
         </div>
         <HourlyForecast
             hourlyTemps={@data?.hourly.temperature_2m}
+            weatherCodes={@data?.hourly.weather_code}
             upcomingDays={rollingWeek}
         />
     </section>
