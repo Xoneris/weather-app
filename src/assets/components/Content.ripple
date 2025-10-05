@@ -70,13 +70,23 @@ export default component Content () {
             width: 100%;
             display: flex;
             gap: 32px;
+            flex-direction: column;
+            align-items: center;
         }
 
         div {
-            min-width: 800px;
+            max-width: 800px;
+            width: 100%;
             display: flex;
             flex-direction: column;
             gap: 48px;
         }
+
+        @media (min-width: 1280px) {
+            section {
+                flex-direction: row;
+            }
+        }
+
     </style>
 }

@@ -33,18 +33,15 @@ export default component Search () {
         @searchTerm = ""
         @selectedLocation = location
 
-        selectedUnits.@locationLatitude = location?.latitude
-        selectedUnits.@locationLongitude = location?.longitude
-        selectedUnits.@locationName = location?.name + ", " + location?.country
     }
 
     function handleSearchClick() {
 
-        if (@location) {
+        if (Object.keys(@selectedLocation).length > 0) {
 
-            selectedUnits.@locationLatitude = @location?.latitude
-            selectedUnits.@locationLongitude = @location?.longitude
-            selectedUnits.@locationName = @location?.name + ", " + @location?.country
+            selectedUnits.@locationLatitude = @selectedLocation?.latitude
+            selectedUnits.@locationLongitude = @selectedLocation?.longitude
+            selectedUnits.@locationName = @selectedLocation?.name + ", " + @selectedLocation?.country
         }
     }
 
@@ -53,11 +50,15 @@ export default component Search () {
         <input 
             type="text"
             placeholder="Search for a place..."
-            value={(@selectedLocation?.name + ", " + @selectedLocation?.country + ", " + @selectedLocation?.timezone) || @searchTerm}
+            value={
+                @selectedLocation?.name !== undefined && @selectedLocation?.country !== undefined && @selectedLocation?.timezone !== undefined
+                ? (@selectedLocation?.name + ", " + @selectedLocation?.country + ", " + @selectedLocation?.timezone)
+                : @searchTerm
+            }
             onInput={(e) => @searchTerm = e.target.value} 
         />
 
-        <button>
+        <button onClick={() => handleSearchClick()}>
             {'Search'}
         </button>
 
@@ -79,13 +80,16 @@ export default component Search () {
         section {
             position: relative;
             max-width: 656px;
+            width: 100%;
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
             gap: 16px;
         }
 
         input {
-            width: 562px;
+            /* max-width: 562px; */
+            width: 100%;
             height: 56px;
             padding: 16px 24px;
             border-radius: 12px;
@@ -94,7 +98,8 @@ export default component Search () {
         }
 
         button {
-            width: 156px;
+            /* max-width: 114px; */
+            width: 100%;
             height: 56px;
             display: flex;
             justify-content: center;
@@ -104,14 +109,20 @@ export default component Search () {
             color: white;
         }
 
+        button:hover {
+            cursor: pointer;
+            background-color: #2B1B9C;
+        }
+
         dialog {
-            width: 526px;
+            max-width: 655px;
+            width: 100%;
             background-color: #262540;
             border: 1px solid #302F4A;
             border-radius: 12px;
             position: absolute;
             padding: 8px;
-            top: 60px;
+            top: 70px;
             left: 0;
             display: flex;
             flex-direction: column;
@@ -133,6 +144,25 @@ export default component Search () {
             border: 1px solid #3C3B5E;
             border-radius: 8px;
             cursor: pointer;
+        }
+
+        @media (min-width: 710px) {
+            section {
+                flex-direction: row;
+            }
+
+            input {
+                max-width: 562px;
+            }
+
+            button {
+                max-width: 114px;
+            }
+
+            dialog {
+                max-width: 526px;
+                width: 100%;
+            }
         }
     </style>
 }

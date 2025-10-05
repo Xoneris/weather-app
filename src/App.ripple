@@ -21,7 +21,6 @@ export component App() {
     <main>
       <Header/>
       <h1>{'Hows the Sky looking today?'}</h1>
-
       <Search/>
       <Content/>
     </main>
@@ -37,9 +36,9 @@ export component App() {
     }
 
     main {
-      max-width: 1216px;
+      max-width: 1264px;
       width: 100%;
-      padding: 48px 0;
+      padding: 48px 24px;
       margin: auto;
       display: flex;
       flex-direction: column;

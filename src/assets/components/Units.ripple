@@ -3,7 +3,6 @@ import Dropdown from "../images/icon-dropdown.svg"
 import CheckmarkIcon from "../images/icon-checkmark.svg"
 
 import { track, effect } from 'ripple';
-
 import { SelectedUnitsContext } from "../../App.ripple"
 
 export default component Units() {
@@ -146,6 +145,10 @@ export default component Units() {
             gap: 10px;
             justify-content: center;
             align-items: center;
+        }
+
+        button:hover {
+            cursor: pointer;
         }
 
         span {

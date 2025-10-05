@@ -1,11 +1,13 @@
 import StormIcon from "../images/icon-storm.webp"
 
-import { track, effect, TrackedArray } from 'ripple';
+import { track, effect } from 'ripple';
 
 export default component DailyForecast({hourlyTemps,upcomingDays}:{hourlyTemps:number[],upcomingDays:any}) {
     
     
     let selectedDayTemps = track([])
+
+    const loadingArray = new Array(7);
 
     effect(() => {
         if (hourlyTemps) {
@@ -44,17 +46,13 @@ export default component DailyForecast({hourlyTemps,upcomingDays}:{hourlyTemps:n
                 </article>
             }
          } else {
-            <article></article>
-            <article></article>
-            <article></article>
-            <article></article>
-            <article></article>
-            <article></article>
-            <article></article>
-        }
-        
 
-        
+            for (const _ of loadingArray) {
+                <article></article>
+            }
+
+        }
+
     </section>
 
     <style>
@@ -66,7 +64,8 @@ export default component DailyForecast({hourlyTemps,upcomingDays}:{hourlyTemps:n
 
         section {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            flex-wrap: wrap;
             gap: 16px;
         }
 
@@ -78,6 +77,7 @@ export default component DailyForecast({hourlyTemps,upcomingDays}:{hourlyTemps:n
 
         article {
             height: 165px;
+            max-width: 103px;
             width: 100px;
             background-color: #262540;
             border-radius: 12px;
@@ -89,5 +89,12 @@ export default component DailyForecast({hourlyTemps,upcomingDays}:{hourlyTemps:n
             color: white;
             border: 1px solid #3C3B5E;
         }
+
+        @media (min-width: 870px) {
+            section {
+                justify-content: space-between;
+            }
+        }
+
     </style>
 }
